@@ -1,5 +1,6 @@
 import { Clapperboard, Clock, Smile, Brain, Users } from 'lucide-react'
 import { useState } from 'react'
+import Testimonials from './components/Testimonials'
 
 export default function App() {
   const [isHovered, setIsHovered] = useState(false)
@@ -61,11 +62,9 @@ export default function App() {
                 className="rounded-2xl shadow-2xl transform group-hover:rotate-1 transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 to-transparent rounded-2xl" />
+              {/* Testimonials Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="bg-white/10 backdrop-blur-lg p-4 rounded-xl">
-                  <h3 className="text-lg font-semibold">Latest Match</h3>
-                  <p className="text-sm text-gray-300">"The whole group loved this pick!"</p>
-                </div>
+                <Testimonials />
               </div>
             </div>
           </div>
