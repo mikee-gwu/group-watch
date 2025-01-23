@@ -44,7 +44,7 @@ export default function App() {
             <div className="flex flex-wrap gap-4 mt-8">
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-pink-400" />
-                <span>2-Minute Quiz</span>
+                <span>30-Second Quiz</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-5 h-5 text-purple-400" />
@@ -71,12 +71,11 @@ export default function App() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-24">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-24">
           {[
-            { icon: Clock, title: "90-Second Quiz", desc: "Fast and fun personality assessment" },
+            { icon: Clock, title: "30-Second Quiz", desc: "Fast and fun personality assessment used by AI to find the perfect movie" },
             { icon: Smile, title: "Group Sync", desc: "Combine everyone's preferences automatically" },
-            { icon: Brain, title: "AI Matching", desc: "Smart algorithm finds perfect matches" },
-            { icon: Clapperboard, title: "Fresh Picks", desc: "Updated daily with new releases" },
+            { icon: Brain, title: "AI Matching", desc: "Smart algorithm finds perfect matches from over 33 thousand movies" },
           ].map((feature, idx) => (
             <div key={idx} className="bg-white/10 p-6 rounded-xl backdrop-blur-lg hover:bg-white/20 transition-all">
               <feature.icon className="w-8 h-8 mb-4 text-pink-400" />
