@@ -1,9 +1,11 @@
 import { Clapperboard, Clock, Smile, Brain, Users } from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Testimonials from './components/Testimonials'
 
 export default function App() {
   const [isHovered, setIsHovered] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
@@ -33,12 +35,13 @@ export default function App() {
             </p>
 
             <button 
+              onClick={() => navigate('/quiz')}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               className="bg-pink-500 hover:bg-pink-600 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
             >
               <Brain className="w-6 h-6" />
-              <span>Start Free Quiz →</span>
+              <span>Start Movie Personality Quiz! →</span>
             </button>
 
             <div className="flex flex-wrap gap-4 mt-8">
