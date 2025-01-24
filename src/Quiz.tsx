@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Brain, Sword, User, Puzzle, Smile, Globe, Home, Eye, Zap, Heart, Search, Laugh, Trophy, BookOpen, Key } from 'lucide-react'
 
 const quizQuestions = [
@@ -51,9 +51,16 @@ const quizQuestions = [
 ]
 
 export default function Quiz() {
+  const location = useLocation()
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<number[]>([])
   const navigate = useNavigate()
+
+  // If we somehow land here without starting the quiz, redirect to home
+  if (!location.state?.started) {
+    navigate('/')
+    return null
+  }
 
   const handleAnswer = (value: number) => {
     const newAnswers = [...answers, value]
@@ -62,9 +69,7 @@ export default function Quiz() {
     if (currentQuestion < quizQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
-      // Submit answers
-      console.log('Final answers:', newAnswers)
-      navigate('/results')
+      navigate('/results', { state: { answers: newAnswers.join('') } })
     }
   }
 
@@ -73,7 +78,7 @@ export default function Quiz() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto"> {/* Increased max width */}
+        <div className="max-w-4xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="w-full bg-white/20 rounded-full h-2.5">

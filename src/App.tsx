@@ -7,6 +7,10 @@ export default function App() {
   const [isHovered, setIsHovered] = useState(false)
   const navigate = useNavigate()
 
+  const startQuiz = () => {
+    navigate('/quiz', { state: { started: true } })
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
       <header className="container mx-auto px-4 py-6">
@@ -35,7 +39,7 @@ export default function App() {
             </p>
 
             <button 
-              onClick={() => navigate('/quiz')}
+              onClick={startQuiz}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               className="bg-pink-500 hover:bg-pink-600 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
