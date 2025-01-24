@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Brain, Users, Film, Popcorn } from 'lucide-react'
+import { Brain, Users, Film, Popcorn, Loader2 } from 'lucide-react'
 
 export default function Complete() {
   const location = useLocation()
   const navigate = useNavigate()
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const previousResults = location.state?.previousResults || []
 
   const handleNextViewer = () => {
@@ -11,8 +13,32 @@ export default function Complete() {
   }
 
   const handleAnalyzeResults = () => {
-    // Placeholder for analysis functionality
-    alert('Analysis coming soon! Current results: ' + previousResults.join(', '))
+    setIsAnalyzing(true)
+    setTimeout(() => {
+      navigate('/recommendations', { state: { previousResults } })
+    }, 4000)
+  }
+
+  if (isAnalyzing) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-white/10 backdrop-blur-lg p-8 rounded-xl">
+              <div className="flex flex-col items-center space-y-6">
+                <Loader2 className="w-12 h-12 text-pink-400 animate-spin" />
+                <h2 className="text-2xl font-bold">
+                  Analyzing Results...
+                </h2>
+                <p className="text-gray-300">
+                  Our AI is crunching the numbers to find the perfect movie matches for your group!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
