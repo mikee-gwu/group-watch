@@ -1,25 +1,22 @@
 import { useLocation } from 'react-router-dom'
-
-// Genre mapping based on answer sequences
-const genresMap = {
-  '1': ['Action', 'Adventure'],
-  '2': ['Drama', 'Romance'],
-  '3': ['Mystery', 'Thriller'],
-  '4': ['Comedy', 'Animation']
-}
+import { genresMap } from './utils/genresMap'
 
 export default function Recommendations() {
   const location = useLocation()
   const previousResults = location.state?.previousResults || []
 
-  // Analyze genres from all answer sequences
+  // Get unique genres from all answer sequences
   const allGenres = previousResults.reduce((acc, result) => {
-    result.split('').forEach(answer => {
-      const genres = genresMap[answer] || []
-      genres.forEach(genre => acc.add(genre))
-    })
+    // Find matching genres for the complete answer sequence
+    const matchingEntry = genresMap.find(
+      entry => entry.Answer_Combination === result
+    )
+    
+    if (matchingEntry) {
+      matchingEntry.Top_Genres.forEach(genre => acc.add(genre))
+    }
     return acc
-  }, new Set())
+  }, new Set<string>())
 
   const uniqueGenres = Array.from(allGenres)
 
@@ -51,11 +48,10 @@ export default function Recommendations() {
             {/* Individual Results */}
             <div className="space-y-6 mb-8">
               {previousResults.map((result, index) => {
-                const viewerGenres = result.split('').reduce((acc, answer) => {
-                  const genres = genresMap[answer] || []
-                  genres.forEach(genre => acc.add(genre))
-                  return acc
-                }, new Set())
+                const matchingEntry = genresMap.find(
+                  entry => entry.Answer_Combination === result
+                )
+                const viewerGenres = matchingEntry ? matchingEntry.Top_Genres : []
 
                 return (
                   <div key={index} className="bg-white/5 p-6 rounded-lg">
@@ -66,7 +62,7 @@ export default function Recommendations() {
                       Answer Sequence: {result}
                     </div>
                     <div className="text-sm text-gray-400">
-                      Preferred Genres: {Array.from(viewerGenres).join(', ')}
+                      Preferred Genres: {viewerGenres.join(', ')}
                     </div>
                   </div>
                 )
