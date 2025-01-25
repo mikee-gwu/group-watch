@@ -1,4 +1,4 @@
-[
+export const MovieData = [
     {
       "Title": "Swiss Family Robinson",
       "Movie_Link": "https://www.imdb.com/title/tt0054357/?ref_=sr_t_1",
@@ -2042,4 +2042,6 @@
       "countries_origin": "['West Germany']",
       "Languages": "['German']"
     }
-	]
+	] as const
+
+export default MovieData
