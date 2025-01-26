@@ -1,12 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { genresMap } from './utils/genresMap'
-import MovieData from './MovieData'
+import moviesData from './data/movies.json'
+import genresMapData from './data/genresMap.json'
 
 export default function Recommendations() {
   const location = useLocation()
   const previousResults = location.state?.previousResults || []
   const [showMovies, setShowMovies] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [movies, setMovies] = useState<typeof moviesData>([])
+  const [genresMap, setGenresMap] = useState<typeof genresMapData>([])
+
+  useEffect(() => {
+    // Simulate loading data
+    setMovies(moviesData)
+    setGenresMap(genresMapData)
+    setIsLoading(false)
+  }, [])
 
   // Get unique genres from all answer sequences
   const allGenres = previousResults.reduce((acc, result) => {
@@ -24,7 +34,7 @@ export default function Recommendations() {
   // Get top 10 recommended movies
   const getRecommendedMovies = () => {
     // Create a map of movies with their matching score
-    const movieScores = MovieData.map(movie => {
+    const movieScores = movies.map(movie => {
       const movieGenres = JSON.parse(movie.genres.replace(/'/g, '"'))
       const score = uniqueGenres.reduce((acc, genre) => 
         movieGenres.includes(genre) ? acc + 1 : acc, 0)
@@ -39,6 +49,21 @@ export default function Recommendations() {
 
   const recommendedMovies = getRecommendedMovies()
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="animate-pulse">
+              <div className="w-16 h-16 mx-auto bg-pink-400 rounded-full mb-4" />
+              <p className="text-xl text-gray-300">Loading recommendations...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (showMovies) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
@@ -50,37 +75,37 @@ export default function Recommendations() {
                   Top 10 Movie Recommendations
                 </span>
               </h1>
-							
-							<div className="space-y-6">
-							  {recommendedMovies.map((movie, index) => (
-							    <div key={index} className="bg-white/5 p-6 rounded-lg">
-							      <div className="flex items-start justify-between">
-							        <div>
-							          <h2 className="text-2xl font-bold mb-2">
-							            {movie.Title} ({movie.Year})
-							          </h2>
-							          <div className="text-pink-400 mb-2">
-							            Rating: {movie.Rating} | Match Score: {movie.score}
-							          </div>
-							          <div className="text-gray-300 mb-4">
-							            Genres: {JSON.parse(movie.genres.replace(/'/g, '"')).join(', ')}
-							          </div>
-							          <div className="text-sm text-gray-400">
-							            Languages: {JSON.parse(movie.Languages.replace(/'/g, '"')).join(', ')}
-							          </div>
-							        </div>
-							        <a 
-							          href={movie.Movie_Link}
-							          target="_blank"
-							          rel="noopener noreferrer"
-							          className="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap"
-							        >
-							          View on IMDB
-							        </a>
-							      </div>
-							    </div>
-							  ))}
-							</div>
+              
+              <div className="space-y-6">
+                {recommendedMovies.map((movie, index) => (
+                  <div key={index} className="bg-white/5 p-6 rounded-lg">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h2 className="text-2xl font-bold mb-2">
+                          {movie.Title} ({movie.Year})
+                        </h2>
+                        <div className="text-pink-400 mb-2">
+                          Rating: {movie.Rating} | Match Score: {movie.score}
+                        </div>
+                        <div className="text-gray-300 mb-4">
+                          Genres: {JSON.parse(movie.genres.replace(/'/g, '"')).join(', ')}
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          Languages: {JSON.parse(movie.Languages.replace(/'/g, '"')).join(', ')}
+                        </div>
+                      </div>
+                      <a 
+                        href={movie.Movie_Link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap"
+                      >
+                        View on IMDB
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
               <button
                 onClick={() => setShowMovies(false)}
