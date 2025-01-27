@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import moviesData from './data/movies.json'
+import moviesData from './MovieData'
 import genresMapData from './data/genresMap.json'
 
 export default function Recommendations() {
@@ -12,10 +12,20 @@ export default function Recommendations() {
   const [genresMap, setGenresMap] = useState<typeof genresMapData>([])
 
   useEffect(() => {
-    // Simulate loading data
-    setMovies(moviesData)
-    setGenresMap(genresMapData)
-    setIsLoading(false)
+    // Simulate data loading
+    const loadData = async () => {
+      try {
+        // Set combined movies data
+        setMovies(moviesData)
+        setGenresMap(genresMapData)
+      } catch (error) {
+        console.error('Error loading data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadData()
   }, [])
 
   // Get unique genres from all answer sequences
@@ -35,7 +45,21 @@ export default function Recommendations() {
   const getRecommendedMovies = () => {
     // Create a map of movies with their matching score
     const movieScores = movies.map(movie => {
-      const movieGenres = JSON.parse(movie.genres.replace(/'/g, '"'))
+      let movieGenres: string[] = []
+      
+      try {
+        // Safely parse the genres string
+        movieGenres = JSON.parse(movie.genres.replace(/'/g, '"'))
+      } catch (error) {
+        console.error('Error parsing genres for movie:', {
+          title: movie.Title,
+          genres: movie.genres,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+        // Use empty array as fallback
+        movieGenres = []
+      }
+
       const score = uniqueGenres.reduce((acc, genre) => 
         movieGenres.includes(genre) ? acc + 1 : acc, 0)
       return { ...movie, score }
