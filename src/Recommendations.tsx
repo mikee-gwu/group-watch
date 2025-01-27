@@ -218,28 +218,14 @@ import { useState, useEffect } from 'react'
                     return (
                       <div key={index} className="bg-white/5 p-6 rounded-lg">
                         <h3 className="text-xl font-semibold mb-2">
-                          Viewer {index + 1} Results:
+                          Viewer {index + 1} Movie Quiz Results:
                         </h3>
-                        <div className="text-gray-300 mb-4">
-                          Answer Sequence: {result}
-                        </div>
                         <div className="text-sm text-gray-400">
                           Preferred Genres: {viewerGenres.join(', ')}
                         </div>
                       </div>
                     )
                   })}
-                </div>
-
-                <div className="mt-8 pt-8 border-t border-white/10">
-                  <h2 className="text-xl font-semibold mb-4">
-                    Combined Group Preferences:
-                  </h2>
-                  <div className="bg-white/5 p-4 rounded-lg">
-                    <pre className="text-gray-300 whitespace-pre-wrap">
-                      {JSON.stringify(uniqueGenres, null, 2)}
-                    </pre>
-                  </div>
                 </div>
 
                 <button
