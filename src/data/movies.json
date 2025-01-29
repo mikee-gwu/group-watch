@@ -16,6 +16,5 @@
     "genres": "['Psychological Horror', 'Psychological Thriller', 'Slasher Horror', 'Suspense Mystery', 'Horror', 'Mystery', 'Thriller']",
     "countries_origin": "['United States']",
     "Languages": "['English']"
-  },
-  // ... (rest of the movie data)
+  }
 ]
